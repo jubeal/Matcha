@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'props-types';
+import PropTypes from 'prop-types';
 
 import { useTheme } from './../../../Context/ThemeContext';
 import StyledText from './style';

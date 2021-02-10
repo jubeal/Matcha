@@ -1,0 +1,18 @@
+{
+  "name": "matcha",
+  "version": "1.0.0",
+  "description": "backend matcha",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec 'ts-node' src/app.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "jubeal",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "gitignore": "^0.6.0",
+    "nodemon": "^2.0.7",
+    "postgresql": "^0.0.1"
+  }
+}

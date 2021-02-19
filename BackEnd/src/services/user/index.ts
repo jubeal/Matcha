@@ -1,17 +1,20 @@
-import pg from 'postgresql';
 import { User } from './../../models';
 const { pool } = require('../../dbClient');
 
 const create = async (user: User) => {
-    const query = `SELECT to_regclass('postgres.users');`;
+    const query = `SELECT EXISTS (
+        SELECT *
+        FROM information_schema.tables
+        WHERE table_schema = 'public' AND table_name = 'users'
+    );`;
     const client = await pool.connect();
     const exist = await client.query(query)
                             .catch(err => {
                                 console.error(err);
                             });
-    console.log(exist);
-    if (!exist.oid) {
-        console.log("creation of users");
+    
+    if (!exist.rows[0].exists) {
+        console.log("creating users table");
         const queryCreate = `
             CREATE TABLE users (
             id INT GENERATED ALWAYS AS IDENTITY,
@@ -29,11 +32,11 @@ const create = async (user: User) => {
             residency varchar
             );
         `;
-        console.log(await client.query(queryCreate)
+        await client.query(queryCreate)
                                 .catch(err => {
                                     console.error(err);
-                                })
-        );
+                                });
+        console.log("Table users created");
     }
     const queryAdd = `
     INSERT INTO users (
@@ -64,60 +67,61 @@ const create = async (user: User) => {
         '${user.jobLocation}',
         '${user.residency}'
     )`;
-    console.log(await client.query(queryAdd)
+    await client.query(queryAdd)
                             .catch(err => {
                                 console.error(err);
                             })
-    );
     client.end();
+    console.log(`new user ${user.firstname}` + 
+                ` ${user.lastname} created`);
 };
 
-const getById = () => {
-
+const getById = async (id: number) => {
+    const query = `SELECT * FROM users WHERE id = ${id}`;
+    const client = await pool.connect();
+    const res = await client.query(query)
+                            .catch(err => {
+                                console.error(err);
+                            });
+    client.end();
+    return res;
 };
 
-const getMany = () => {
-
+const getMany = async () => {
+    const query = `SELECT * FROM users`;
+    const client = await pool.connect();
+    const res = await client.query(query)
+                            .catch(err => {
+                                console.error(err);
+                            });
+    client.end();
+    return res;
 };
 
-const deleteById = () => {
-
+const deleteById = async (id: number) => {
+    const query = `DELETE from users WHERE id = ${id}`;
+    const client = await pool.connect();
+    await client.query(query)
+                .catch(err => {
+                    console.error(err);
+                })
+    client.end();
+    console.log("User deleted");
 };
 
-const update = () => {
-
+const updateById = async (id: number, row: string, value: string) => {
+    const query = `
+    UPDATE users
+    SET ${row} = '${value}'
+    WHERE id = ${id}
+    `;
+    const client = await pool.connect();
+    await client.query(query)
+                .catch(err => {
+                    console.error(err);
+                })
+    client.end();
+    console.log(`User number ${id} updated`);
 };
 
-export default { create, getById, getMany, deleteById, update};
-
-/*const query = `
-CREATE TABLE users (
-    id INT GENERATED ALWAYS AS IDENTITY,
-    email varchar,
-    firstName varchar,
-    lastName varchar,
-    age int
-);
-`;*/
-
-/*const query = `
-INSERT INTO users (email, firstName, lastName, age)
-VALUES ('j.bealleroux@gmail.com', 'Jules', 'Béal', 22)
-`;*/
-
-/*const query = `
-SELECT *
-from users
-WHERE age<30
-`;*/
-
-/*const query = `
-UPDATE users
-SET age = 23
-WHERE email = 'j.bealleroux@gmail.com'
-`;*/
-
-/*const query = `
-DELETE from users
-WHERE email = 'j.bealleroux@gmail.com'
-`;*/
+export default { create, getById, getMany, deleteById, updateById};

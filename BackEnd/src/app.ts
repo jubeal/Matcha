@@ -37,4 +37,10 @@ const user: User = {
     residency: 'Paris'
 }
 
-UserServices.create(user);
+UserServices.updateById(5, 'residency', 'Lyon');
+/*UserServices.getMany()
+            .then((res) => { 
+    for (let row of res.rows) {
+        console.log(row);
+    }
+ });*/

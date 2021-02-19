@@ -1,4 +1,4 @@
-const express= require('express');
+/*const express= require('express');
 
 const app = express();
 const PORT = process.env["PORT"] ?? 2454;
@@ -15,4 +15,26 @@ app.get('/test', (req, res) => {
 
 app.listen(PORT, () => {
     console.log(`Serveur listenning to port ${PORT}`);
-})
+})*/
+
+import { Console } from "console";
+
+import UserServices from "./services";
+import { User, GenderEnum } from "./models";
+
+const user: User = {
+    firstname: 'Jules',
+    lastname: 'Béal',
+    age: 22,
+    email: 'j.bealleroux@gmail.com',
+    tel: '0672644676',
+    gender: GenderEnum.MALE,
+    target: GenderEnum.FEMALE,
+    lat: 10,
+    long: 50,
+    job: 'développeur',
+    jobLocation: 'Paris',
+    residency: 'Paris'
+}
+
+UserServices.create(user);

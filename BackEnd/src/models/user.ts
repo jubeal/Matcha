@@ -1,14 +1,15 @@
 enum GenderEnum {
-    'MALE',
-    'FEMALE',
-    'AGENDER',
-    'GENDERFLUID'
+    MALE = 'MALE',
+    FEMALE = 'FEMALE',
+    AGENDER = 'AGENDER',
+    GENDERFLUID = 'GENDERFLUID'
 }
 
 interface User {
-    id: number;
+    id?: number;
     firstname: string;
     lastname: string;
+    age: number;
     email: string;
     tel: string;
     gender: GenderEnum;
@@ -20,4 +21,4 @@ interface User {
     residency: string;
 }
 
-export default User ;
+export { User, GenderEnum };

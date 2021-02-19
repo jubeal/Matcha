@@ -1,3 +1,3 @@
-import User from './user';
+import { User, GenderEnum } from './user';
 
-export { User };
+export { User, GenderEnum };

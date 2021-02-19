@@ -13,6 +13,7 @@
     "express": "^4.17.1",
     "gitignore": "^0.6.0",
     "nodemon": "^2.0.7",
+    "pg": "^8.5.1",
     "postgresql": "^0.0.1"
   }
 }

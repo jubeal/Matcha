@@ -1,6 +1,12 @@
-/*const express= require('express');
+const express= require('express');
+const bodyParser = require('body-parser');
 
 const app = express();
+
+//Parse incoming request data
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
 const PORT = process.env["PORT"] ?? 2454;
 
 app.get('/test', (req, res) => {
@@ -15,9 +21,9 @@ app.get('/test', (req, res) => {
 
 app.listen(PORT, () => {
     console.log(`Serveur listenning to port ${PORT}`);
-})*/
+})
 
-import { Console } from "console";
+/*import { Console } from "console";
 
 import UserServices from "./services";
 import { User, GenderEnum } from "./models";
@@ -37,8 +43,8 @@ const user: User = {
     residency: 'Paris'
 }
 
-UserServices.updateById(5, 'residency', 'Lyon');
-/*UserServices.getMany()
+UserServices.create(user);
+UserServices.getMany()
             .then((res) => { 
     for (let row of res.rows) {
         console.log(row);

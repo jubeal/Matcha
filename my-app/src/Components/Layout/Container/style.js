@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const StyledContainer = styled.div`
     display: flex;
-    felx-direction: ${({ row }) => (row ? 'row' : 'column')};
+    flex-direction: ${({ row }) => (row ? 'row' : 'column')};
     justify-content: ${({ justify }) => justify};
     align-items: ${({ align }) => align};
     flex-wrap: ${({ noWrap }) => (noWrap ? 'nowrap' : 'wrap')};

@@ -1,19 +1,23 @@
 export const colors = {
     dark: {
-        primary: '#56E0EB' ,
-        secondary: '#EB452F' ,
+        primary: '#28B03F' ,
+        secondary: '#3AFC8B' ,
         light: '#FFFFFF' ,
-        dark: '#1F1D1C' ,
-        defaultText: '#000000' ,
-        hoverColor: '#66ADD1' ,
+        dark: '#212121' ,
+        dark2: '#3B3B3B',
+        defaultText: '#FCFCFC' ,
+        secondaryText: '#9E9E9E',
+        hoverColor: '#0E3D16' ,
     },
     light: {
-        primary: '#56E0EB' ,
-        secondary: '#EB452F' ,
+        primary: '#28B03F' ,
+        secondary: '#3AFC8B' ,
         light: '#FFFFFF' ,
-        dark: '#1F1D1C' ,
-        defaultText: '#000000' ,
-        hoverColor: '#66ADD1' ,
+        dark: '#212121' ,
+        dark2: '#3B3B3B',
+        defaultText: '#FCFCFC' ,
+        secondaryText: '#9E9E9E',
+        hoverColor: '#0E3D16' ,
     },
 };
 

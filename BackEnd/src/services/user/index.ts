@@ -29,7 +29,9 @@ const create = async (user: User) => {
             long float8,
             job varchar,
             jobLocation varchar,
-            residency varchar
+            residency varchar,
+            pwd varchar,
+            salt varchar,
             );
         `;
         await client.query(queryCreate)
@@ -51,7 +53,9 @@ const create = async (user: User) => {
         long,
         job,
         jobLocation,
-        residency
+        residency,
+        pwd,
+        salt
     )
     VALUES (
         '${user.firstname}',
@@ -65,11 +69,15 @@ const create = async (user: User) => {
         '${user.long}',
         '${user.job}',
         '${user.jobLocation}',
-        '${user.residency}'
+        '${user.residency}',
+        '${user.pwd}',
+        '${user.salt}
     )`;
     await client.query(queryAdd)
                             .catch(err => {
                                 console.error(err);
+                                client.end();
+                                return ;
                             })
     client.end();
     console.log(`new user ${user.firstname}` + 
@@ -109,12 +117,19 @@ const deleteById = async (id: number) => {
     console.log("User deleted");
 };
 
-const updateById = async (id: number, row: string, value: string) => {
-    const query = `
-    UPDATE users
-    SET ${row} = '${value}'
-    WHERE id = ${id}
-    `;
+const generateQuery = (user: Partial<User>, id: number) => {
+    const queryContent = Object.entries(user).map(([key, value]) => {
+        return `${key} = '${value}'`;
+    });
+    return `
+        UPDATE users
+        SET ${queryContent.join(', ')}
+        WHERE id = ${id}
+        `;
+}
+
+const updateById = async (id: number, user: Partial<User>) => {
+    const query = generateQuery(user, id);
     const client = await pool.connect();
     await client.query(query)
                 .catch(err => {

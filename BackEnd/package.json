@@ -10,6 +10,7 @@
   "author": "jubeal",
   "license": "ISC",
   "dependencies": {
+    "eslint-config-airbnb": "^18.2.1",
     "express": "^4.17.1",
     "gitignore": "^0.6.0",
     "nodemon": "^2.0.7",

@@ -20,7 +20,7 @@ const Text = ({
     const currentColor = color || theme.defaultText;
 
     return (
-        <div onCick={onClick}>
+        <div onClick={onClick}>
             <StyledText
                 as={variant}
                 color={currentColor}

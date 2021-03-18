@@ -4,8 +4,8 @@
 /node_modules
 /.pnp
 .pnp.js
-./BackEnd/node_modules
-./my-app/node_modules
+/BackEnd/node_modules
+/my-app/node_modules
 
 # testing
 /coverage

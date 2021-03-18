@@ -11,14 +11,16 @@ interface User {
     lastname: string;
     age: number;
     email: string;
-    tel: string;
+    tel?: string;
     gender: GenderEnum;
     target: GenderEnum;
-    lat: number;
-    long: number;
-    job: string;
-    jobLocation: string;
-    residency: string;
+    lat?: number;
+    long?: number;
+    job?: string;
+    jobLocation?: string;
+    residency?: string;
+    pwd: string;
+    salt: string;
 }
 
 export { User, GenderEnum };

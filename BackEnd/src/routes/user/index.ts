@@ -1,7 +1,11 @@
+const bcrypt = require('bcrypt');
+
 import userServices from '../../services';
 import { User, GenderEnum } from '../../models';
 
-exports.addUser = (req, res) => {
+exports.addUser = async (req, res) => {
+    console.log('addUser');
+    console.log(req.body);
     if (!req.body.firstname) {
         return res.status(400).send({
             success: 'false',
@@ -37,12 +41,24 @@ exports.addUser = (req, res) => {
             success: 'false',
             message: 'password missing'
         })
-    } else if (!req.body.pwd) {
+    }
+
+    const { rows : users }: { rows: User[] } = await userServices.getMany();
+    if (users.some((element) => {
+        if (element.email === req.body.email) {
+            return true;
+        }
+        return false;
+    })) {
         return res.status(400).send({
             success: 'false',
-            message: 'salt missing'
+            message: 'email already exist'
         })
     }
+
+    const saltRounds = Math.floor(Math.random() * (15 - 5) + 5);
+    const pwd = await bcrypt.hash(req.body.pwd, saltRounds);
+
     const user: User = {
         firstname: req.body.firstname,
         lastname: req.body.lastname,
@@ -56,8 +72,7 @@ exports.addUser = (req, res) => {
         job : req.body.job ? req.body.job : undefined,
         jobLocation: req.body.jobLocation ? req.body.jobLocation : undefined,
         residency: req.body.residency ? req.body.residency : undefined,
-        pwd: req.body.pwd,
-        salt: req.body.salt
+        pwd: pwd,
     }
     if (user) {
         userServices.create(user);
@@ -74,23 +89,26 @@ exports.addUser = (req, res) => {
 }
 
 exports.getUser = async (req, res) => {
+    console.log('getUser');
     const { id } = req.params;
-    const ret = await userServices.getById(id);
+    const { rows: user }: { rows: User[] } = await userServices.getById(id);
     return res.status(200).send({
         success: 'true',
-        user: ret.rows[0]
+        user: user[0],
     })
 }
 
 exports.getMany = async (req, res) => {
-    const ret = await userServices.getMany();
+    console.log('getMany');
+    const { rows: users }: { rows: User[] } = await userServices.getMany();
     return res.status(200).send({
         success: 'true',
-        users: ret.rows
+        users: users
     })
 }
 
 exports.updateUser = (req, res) => {
+    console.log('updateUser');
     const { id } = req.params;
     const userToUpdate = req.body as Partial<User>;
     userServices.updateById(id, userToUpdate);
@@ -101,9 +119,24 @@ exports.updateUser = (req, res) => {
 }
 
 exports.deleteUser = (req, res) => {
+    console.log('deleteUser');
     const { id } = req.params;
     userServices.deleteById(id);
     return res.status(200).send({
+        success: 'true',
         message: `${id} successfully deleted`
     })
+}
+
+exports.login = async (req, res) => {
+    const { email, pwd } = req.body;
+    const { rows: user }: { rows: User[] } = await userServices.getByEmail(email);
+    if (user) {
+        const auth = await bcrypt.compare(pwd, user[0].pwd)
+    } else {
+        return res.status(400).send({
+            success: 'false',
+            message: "email doesn't exist"
+        })
+    }
 }

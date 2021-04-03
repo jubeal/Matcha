@@ -30,8 +30,7 @@ const create = async (user: User) => {
             job varchar,
             jobLocation varchar,
             residency varchar,
-            pwd varchar,
-            salt varchar,
+            pwd varchar
             );
         `;
         await client.query(queryCreate)
@@ -54,8 +53,7 @@ const create = async (user: User) => {
         job,
         jobLocation,
         residency,
-        pwd,
-        salt
+        pwd
     )
     VALUES (
         '${user.firstname}',
@@ -70,8 +68,7 @@ const create = async (user: User) => {
         '${user.job}',
         '${user.jobLocation}',
         '${user.residency}',
-        '${user.pwd}',
-        '${user.salt}
+        '${user.pwd}'
     )`;
     await client.query(queryAdd)
                             .catch(err => {
@@ -139,4 +136,15 @@ const updateById = async (id: number, user: Partial<User>) => {
     console.log(`User number ${id} updated`);
 };
 
-export default { create, getById, getMany, deleteById, updateById};
+const getByEmail = async (email: string) => {
+    const query = `SELECT * FROM users WHERE email = ${email}`;
+    const client = await pool.connect();
+    const res = await client.query(query)
+                            .catch(err => {
+                                console.error(err);
+                            });
+    client.end();
+    return res;
+};
+
+export default { create, getById, getMany, deleteById, updateById, getByEmail };

@@ -10,10 +10,18 @@
   "author": "jubeal",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "eslint-config-airbnb": "^18.2.1",
     "express": "^4.17.1",
+    "express-jwt": "^6.0.0",
     "gitignore": "^0.6.0",
+    "jsonwebtoken": "^8.5.1",
     "nodemon": "^2.0.7",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
     "pg": "^8.5.1",
     "postgresql": "^0.0.1"
   }

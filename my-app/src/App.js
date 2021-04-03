@@ -4,8 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import ThemeContext from './Context/ThemeContext';
 
-import { Header, Footer, Register, Container } from './Components';
-import { ThemeProvider } from 'styled-components';
+import { Header, Footer, Register } from './Components';
 
 function App() {
   /*const { xs, sm, md, lg, xl } = useBreakpoints({
@@ -23,10 +22,12 @@ function App() {
         <Router>
           <Header />
           {/*{mobile ? <MobileHeader /> : <Header />}*/}
-          <div style={{ 
+          <div
+            style={{
               flex: '1',
-              backgroundColor: '#212121'
-            }}>
+              backgroundColor: '#212121',
+            }}
+          >
             <Switch>
               <Route path="/page">
                 <p>Test</p>

@@ -20,7 +20,6 @@ interface User {
     jobLocation?: string;
     residency?: string;
     pwd: string;
-    salt: string;
 }
 
 export { User, GenderEnum };

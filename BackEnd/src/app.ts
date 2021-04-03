@@ -1,16 +1,37 @@
 const express= require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
+const jwt = require('jsonwebtoken');
+const exjwt = require('express-jwt');
+require('dotenv').config();
 
 const userRoutes = require('./routes/user');
 
 const app = express();
 
 //Parse incoming request data
+/*app.use(cors({
+    origin: [
+        'http://localhost:3000',
+    ]
+}));*/
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-type,Authorization');
+    next();
+})
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false })); 
+app.use(bodyParser.urlencoded({ extended: true }));
 
-const PORT = process.env["PORT"] ?? 2454;
+//Instantiating the express-jwt middle ware
+const jwtMW = exjwt({
+    secret: process.env["JWT_SECRET"],
+    algorithms: ['sha1', 'RS256', 'HS256'],
+});
 
+const PORT = process.env.PORT ?? 2454;
+
+//app.post('/login', userRoutes.login);
 app.post('/', userRoutes.addUser);
 app.get('/', userRoutes.getMany);
 app.get('/:id', userRoutes.getUser);

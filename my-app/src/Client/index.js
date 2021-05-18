@@ -1,3 +1,15 @@
-import { getManyRequest, postRequest } from './Requests';
+import {
+  getManyRequest,
+  addUserRequest,
+  loginRequest,
+  getUserByIdRequest,
+} from './Requests';
+import AuthService from './AuthService';
 
-export { getManyRequest, postRequest };
+export {
+  getManyRequest,
+  addUserRequest,
+  loginRequest,
+  getUserByIdRequest,
+  AuthService,
+};

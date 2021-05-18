@@ -1,4 +1,4 @@
-import React /*, { useEffect }*/ from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
@@ -8,7 +8,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
 import { useTheme } from './../../Context/ThemeContext';
-import { postRequest } from '../../Client';
+import { addUserRequest, AuthService } from '../../Client';
 
 import { Container } from './../Layout';
 import { Text } from './../DataDisplay';
@@ -17,6 +17,11 @@ import { Button, Input } from './../Inputs';
 const Register = () => {
   const theme = useTheme();
   const history = useHistory();
+  const authService = new AuthService();
+
+  if (authService.loggedIn()) {
+    history.push('/profile');
+  }
 
   const [error, setError] = React.useState([]);
 
@@ -125,6 +130,7 @@ const Register = () => {
       })
       .filter((err) => err.errorMsg !== undefined);
     if (newErrors.length > 0) {
+      console.log(newErrors);
       setError(newErrors);
       return false;
     }
@@ -175,14 +181,15 @@ const Register = () => {
   return (
     <Container
       align="center"
+      justify="center"
       style={{
-        padding: '100px',
+        width: '100%',
       }}
     >
       {formControl.map((field, idx) => {
         const err = error.find((e) => e.key === field.key);
         return (
-          <div key={field.key} style={{ padding: '15px' }}>
+          <div key={field.key} style={{ paddingBottom: '30px' }}>
             <Input
               color={theme.defaultText}
               backgroundColor={theme.dark2}
@@ -205,9 +212,9 @@ const Register = () => {
       })}
       <ThemeProvider theme={muiTheme}>
         <FormControl
+          style={{ paddingBottom: '15px' }}
           variant="outlined"
           className={classes.formControl}
-          border="white"
         >
           <InputLabel id="demo-simple-select-outlined-label" color="primary">
             Genre
@@ -227,7 +234,11 @@ const Register = () => {
             <MenuItem value="GENDERFLUID">Genre fluide</MenuItem>
           </Select>
         </FormControl>
-        <FormControl variant="outlined" className={classes.formControl}>
+        <FormControl
+          style={{ paddingBottom: '15px' }}
+          variant="outlined"
+          className={classes.formControl}
+        >
           <InputLabel id="demo-simple-select-outlined-label">
             Cherche
           </InputLabel>
@@ -251,14 +262,14 @@ const Register = () => {
         backgroundColor={theme.primary}
         borderRadius="4px"
         width="220px"
-        height="50px"
+        height="30px"
         border={`none`}
-        style={{ padding: '10px' }}
+        style={{ padding: '5px' }}
         hover
         onClick={async () => {
           if (checkError() === true) {
-            postRequest(form);
-            history.push('/');
+            const res = await addUserRequest(form);
+            console.log(res);
           }
           console.log(form);
         }}

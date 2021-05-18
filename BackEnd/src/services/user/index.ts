@@ -137,7 +137,7 @@ const updateById = async (id: number, user: Partial<User>) => {
 };
 
 const getByEmail = async (email: string) => {
-    const query = `SELECT * FROM users WHERE email = ${email}`;
+    const query = `SELECT * FROM users WHERE email = '${email}'`;
     const client = await pool.connect();
     const res = await client.query(query)
                             .catch(err => {

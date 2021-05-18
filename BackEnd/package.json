@@ -10,6 +10,7 @@
   "author": "jubeal",
   "license": "ISC",
   "dependencies": {
+    "@types/pg": "^7.14.11",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",

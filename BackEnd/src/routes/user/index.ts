@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 import userServices from '../../services';
 import { User, GenderEnum } from '../../models';
@@ -130,9 +131,28 @@ exports.deleteUser = (req, res) => {
 
 exports.login = async (req, res) => {
     const { email, pwd } = req.body;
+    console.log(`Login: ${email} :: ${pwd}`);
     const { rows: user }: { rows: User[] } = await userServices.getByEmail(email);
-    if (user) {
-        const auth = await bcrypt.compare(pwd, user[0].pwd)
+    if (user.length) {
+        const result = await bcrypt.compare(pwd, user[0].pwd);
+        if (result){
+            console.log(`expires in: ${process.env['EXPIRES_IN']}`)
+            const token = jwt.sign(
+                { id: user[0].id, email: user[0].email},
+                process.env['JWT_SECRET'],
+                { expiresIn: parseInt(process.env['EXPIRES_IN']) }
+            );
+            return res.status(200).send({
+                success: 'true',
+                message: 'successfully login',
+                token,
+            })
+        } else {
+            return res.status(400).send({
+                success: 'false',
+                message: 'incorect password'
+            })
+        }
     } else {
         return res.status(400).send({
             success: 'false',

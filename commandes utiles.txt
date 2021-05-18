@@ -1,2 +1,5 @@
 docker exec -it {nom du docker} bash : lance un bash dans le docker souhaité
 docker run --name {nom du docker} -e POSTGRES_PASSWORD={mdp} -e {variable d'env souhaité} -p {port entrée}:{port sortie} (5432:5432) -d postgres : créé un docker
+psql -U {nom d'utilisateur} : entre dans la base postgresql
+\dt : list des tables
+Select * from [nom de table]; : affiche toute la table selectionné

@@ -1,10 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-//import { useBreakpoints } from 'react-breakpoints-hook';
-
 import ThemeContext from './Context/ThemeContext';
 
-import { Header, Footer, Register } from './Components';
+import { Header, Footer, Register, Home, Profile } from './Components';
 
 function App() {
   /*const { xs, sm, md, lg, xl } = useBreakpoints({
@@ -24,22 +22,20 @@ function App() {
           {/*{mobile ? <MobileHeader /> : <Header />}*/}
           <div
             style={{
+              display: 'flex',
               flex: '1',
               backgroundColor: '#212121',
             }}
           >
             <Switch>
-              <Route path="/page">
-                <p>Test</p>
+              <Route path="/profile">
+                <Profile />
               </Route>
               <Route path="/inscription">
                 <Register />
               </Route>
-              <Route path="/connexion">
-                <p>Connexion</p>
-              </Route>
               <Route path="/">
-                <p>Accueil</p>
+                <Home />
               </Route>
             </Switch>
           </div>

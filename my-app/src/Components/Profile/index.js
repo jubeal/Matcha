@@ -1,29 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { AuthService, getUserByIdRequest } from './../../Client';
 
 import { Container } from './../Layout';
 import { Text } from './../DataDisplay';
-//import { Button } from './../Inputs';
 
 const Profile = () => {
   const history = useHistory();
-  const authService = new AuthService();
+  const authService = useMemo(() => {
+    return new AuthService();
+  }, []);
 
   if (!authService.loggedIn()) {
     history.push('/');
   }
 
-  console.log(getUserByIdRequest(authService.getProfile().id));
-  const {
-    firstname,
-    lastname,
-    age,
-    email,
-    tel,
-    description,
-  } = getUserByIdRequest(authService.getProfile().id);
+  const [infos, setInfos] = useState({});
+
+  useEffect(() => {
+    console.log('useEffect');
+    getUserByIdRequest(authService.getProfile().id).then((result) => {
+      console.log(`resultats : ${result}`);
+      setInfos(result);
+    });
+  }, [authService]);
 
   return (
     <Container
@@ -37,12 +38,12 @@ const Profile = () => {
       </Container>
 
       <Container style={{ width: '50%' }} justify="flex-start">
-        <Text>Prénom : {firstname}</Text>
-        <Text>Nom de Famille : {lastname}</Text>
-        <Text>Age : {age}</Text>
-        <Text>Adresse mail : {email}</Text>
-        <Text>Numéro de Téléphone : {tel}</Text>
-        <Text>Description : {description}</Text>
+        <Text>Prénom : {infos.firstname}</Text>
+        <Text>Nom de Famille : {infos.lastname}</Text>
+        <Text>Age : {infos.age}</Text>
+        <Text>Adresse mail : {infos.email}</Text>
+        <Text>Numéro de Téléphone : {infos.tel}</Text>
+        <Text>Description : {infos.description}</Text>
       </Container>
     </Container>
   );

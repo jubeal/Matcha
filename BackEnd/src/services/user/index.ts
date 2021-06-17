@@ -82,6 +82,7 @@ const create = async (user: User) => {
 };
 
 const getById = async (id: number) => {
+    console.log(`id : ${id}`);
     const query = `SELECT * FROM users WHERE id = ${id}`;
     const client = await pool.connect();
     const res = await client.query(query)
@@ -89,6 +90,7 @@ const getById = async (id: number) => {
                                 console.error(err);
                             });
     client.end();
+    console.log(`returning : ${res}`);
     return res;
 };
 

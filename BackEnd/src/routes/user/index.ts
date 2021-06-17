@@ -92,6 +92,7 @@ exports.addUser = async (req, res) => {
 exports.getUser = async (req, res) => {
     console.log('getUser');
     const { id } = req.params;
+    console.log(await userServices.getById(id));
     const { rows: user }: { rows: User[] } = await userServices.getById(id);
     return res.status(200).send({
         success: 'true',
@@ -131,12 +132,11 @@ exports.deleteUser = (req, res) => {
 
 exports.login = async (req, res) => {
     const { email, pwd } = req.body;
-    console.log(`Login: ${email} :: ${pwd}`);
+    console.log(`Login: ${email}`);
     const { rows: user }: { rows: User[] } = await userServices.getByEmail(email);
     if (user.length) {
         const result = await bcrypt.compare(pwd, user[0].pwd);
         if (result){
-            console.log(`expires in: ${process.env['EXPIRES_IN']}`)
             const token = jwt.sign(
                 { id: user[0].id, email: user[0].email},
                 process.env['JWT_SECRET'],

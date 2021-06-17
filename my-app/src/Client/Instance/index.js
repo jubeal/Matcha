@@ -12,7 +12,7 @@ const instance = axios.create({
 
 instance.interceptors.request.use((request) => {
   request.headers.authorization = client.loggedIn()
-    ? `Bearer ${client.getToken}`
+    ? `Bearer ${client.getToken()}`
     : '';
 
   return request;
